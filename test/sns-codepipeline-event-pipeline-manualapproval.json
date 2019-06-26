@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:ap-southeast-2:015287311889:cloudwatch-slackops-serverless-aggregate-dev:1fa6a319-0376-4f33-a7e3-43705cb65f9f",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "a2a6099d-cf30-57ea-9350-5ce2a0811ef7",
+                "TopicArn": "arn:aws:sns:ap-southeast-2:015287311889:cloudwatch-slackops-serverless-aggregate-dev",
+                "Subject": "APPROVAL NEEDED: AWS CodePipeline mieducation-dev for action Approval",
+                "Message": "{\"region\":\"ap-southeast-2\",\"consoleLink\":\"https://console.aws.amazon.com/codepipeline/home?region=ap-southeast-2#/view/mieducation-dev\",\"approval\":{\"pipelineName\":\"mieducation-dev\",\"stageName\":\"Approval\",\"actionName\":\"Approval\",\"token\":\"52e90d37-e76b-463e-9d1f-824da1fdc13e\",\"expires\":\"2019-06-22T22:13Z\",\"externalEntityLink\":null,\"approvalReviewLink\":\"https://console.aws.amazon.com/codepipeline/home?region=ap-southeast-2#/view/mieducation-dev/Approval/Approval/approve/52e90d37-e76b-463e-9d1f-824da1fdc13e\",\"customData\":\"Should I release this build?\"}}",
+                "Timestamp": "2019-06-15T22:13:05.255Z",
+                "SignatureVersion": "1",
+                "Signature": "VvmxRw6w5g4WgzDehEEDoRJMaT88PSEoO5P48m71XGZm1Fm7FmUUGp3IGA0rg5fUr8BPNzD0ggt4NW5cjOPsOpMIAx840kUgyUSguJZV5hNzZvyFYEBRYXv2F+PRSpTG9H6fxAoRDuKTccITCA8ucL5SrZAhPDFFTN3mpTVESqEV2nNV90ooLa6GZVAV8mgX9tGgAG+XzgqosAkIkHCpAeR4HDbWClmoL8sdj548BgL0qfsajYVff1dFN/0GbYuXCPCM9xlOUYjnSKr9Se6CDA4YW6NK64UCQT4cpT89rXg6SYVTN4ytcYjUQSep4JHfCKGlaoR/4xG+rJ4Skqr5JQ==",
+                "SigningCertUrl": "https://sns.ap-southeast-2.amazonaws.com/SimpleNotificationService-6aad65c2f9911b05cd53efda11f913f9.pem",
+                "UnsubscribeUrl": "https://sns.ap-southeast-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:ap-southeast-2:015287311889:cloudwatch-slackops-serverless-aggregate-dev:1fa6a319-0376-4f33-a7e3-43705cb65f9f",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}

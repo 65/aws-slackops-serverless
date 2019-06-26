@@ -1,0 +1,6 @@
+
+{
+"Name": "SLACK_APP_HOOK_URL",
+"Value": "https://hooks.slack.com/services/xxxxxxxxxx/xxxxxxxxxx/xxxxxxxxxxxxxxxxx",
+"Type": "String"
+}
