@@ -8,7 +8,7 @@ A [Serverless](https://serverless.com/framework/docs/providers/aws/guide/intro/)
 
 ## Overview
 
-Built on code from Assertible's [lambda-cloudwatch-slack](https://assertible.com/blog/npm-package-lambda-cloudwatch-slack) thanks to (@creichert)[https://github.com/creichert] and team.
+Built on code from Assertible's [lambda-cloudwatch-slack](https://assertible.com/blog/npm-package-lambda-cloudwatch-slack) thanks to [@creichert](https://github.com/creichert) and team.
 This function was originally derived from the
 [AWS blueprint named `cloudwatch-alarm-to-slack`](https://aws.amazon.com/blogs/aws/new-slack-integration-blueprints-for-aws-lambda/). The
 function in this repo improves on the default blueprint in several ways:
@@ -48,7 +48,7 @@ If it is a [codepipeline manual approval step](https://docs.aws.amazon.com/codep
 
 ## Configuration
 There's a few steps here, so bear with us. 
-## 1. Create your slack app 
+### 1. Create your slack app 
 
 Start at [https://api.slack.com/apps ](https://api.slack.com/apps ) Add a name, (icon if you wish), and activate the `WebHooks` integration. 
 
@@ -58,13 +58,16 @@ Secondly connect a webhook to the workspace, and decide on a channel to post the
 
 ![Add webhook to workspace](https://github.com/65/aws-slackops-serverless/raw/master/images/add_new_webhook_to_workspace.png)
 
-## 2. Clone this repository and set up
+![Give permission](https://github.com/65/aws-slackops-serverless/raw/master/images/new_webhook_workspace_permissions.png)
+
+
+### 2. Clone this repository and set up
 ```bash 
 git clone https://github.com/65/aws-slackops-serverless
 npm install 
 ```
 
-### Setup AWS variables
+#### Setup AWS variables
 
 Because this app is on AWS, and we don't want to submit any sensitive or pertinent data to git, you can set up each of the environment variables using AWS SSM [Parameter Store](http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html)
 
@@ -81,12 +84,12 @@ Let's push these up to SSM using the AWS CLI (add `--profile yourprofilename` if
 aws ssm put-parameter --cli-input-json file://params.json --region ap-southeast-2 
 ```
 
-### Setup Serverless
+#### Setup Serverless
 In the `serverless.yml` update the `region` to match where you have pushed your SSM variable. 
 
 If you are using named profiles in your AWS CLI add that profile name to `profile`
 
-## 3. Deploy the app to AWS
+### 3. Deploy the app to AWS
 The final step is to deploy the integration to AWS:
 ```bash
 serverless deploy
@@ -96,7 +99,7 @@ If you wish to deploy to a stage other than the default `dev`:
 serverless deploy --stage prod
 ```
 
-## 4. Add your Webhook URL to the Slack App 
+### 4. Add your Webhook URL to the Slack App 
 Once deployed you will get a URL for the `webhook` in the output of the serverless deploy. 
 
 ```bash
@@ -117,9 +120,9 @@ At this point you can run a test and see some output in slack.
 serverless invoke local --function aggregator --path test/sns-codedeploy-event.json 
 ```
 
-## 5. Configure AWS serices 
+### 5. Configure AWS serices 
 
-### Elastic Beanstalk 
+#### Elastic Beanstalk 
 To set ElasticBeanstalk to push notifications, you need the ARN of the SNS Topic created in this project. In your ElasticBeanstalk code create an [.ebextensions](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/ebextensions.html) folder, and then create a file (something like `10-environment-config`) and pop this in, replacing your arn with the example:
 ```
 option_settings:
@@ -129,7 +132,7 @@ option_settings:
 ```
 Full details on [aws:elasticbeanstalk:sns:topics](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html#command-options-general-elasticbeanstalksnstopics) found here. 
 
-### Code Pipeline (and other services) 
+#### Code Pipeline (and other services) 
 To push in notifications from most services you can create an Event Rule in CloudWatch. 
 
 Cloudwatch > Events > Rules > Create Rule
@@ -160,7 +163,7 @@ On Configure Details - give the rule a meaningful name like `CodePipeline-to-Sla
 
 Then save by clicking `Create Rule`. 
 
-### Code Pipeline Manual Approval
+#### Code Pipeline Manual Approval
 Edit the CodePipeline stage > Manual Approval. 
 Use the comments wisely, as this will show up in the confirmation box, so indicate the result of the action here. 
 ![Add SNS to CodePipeline manual approval](https://github.com/65/aws-slackops-serverless/raw/master/images/add_sns_to_codepipeline_approval.png)
