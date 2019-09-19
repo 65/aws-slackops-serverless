@@ -44,7 +44,7 @@ var handleCodePipeline = function(event, context) {
 
     if(approvalDetail){
 
-      header = "APPROVAL REQUIRED: CodePipeline " + changeType;
+      header = "APPROVAL REQUIRED: " + approvalDetail.stageName;
       subject = "AWS CodePipeline needs your attention";
       fields.push({ "title": "Message", "value": header, "short": false });
       fields.push({ "title": "Pipeline", "value": approvalDetail.pipelineName, "short": true });

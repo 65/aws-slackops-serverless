@@ -9,6 +9,9 @@ var baseSlackMessage = {}
 const querystring = require('querystring');
 
 module.exports.aggregator = (event, context, callback) => {
+  /*
+    Receives a notification from an AWS service, and decides what to do with it
+  */
   console.log("starting handler");
   if (hookUrl) {
     processEvent(event, context, hookUrl);

@@ -33,6 +33,10 @@ function in this repo improves on the default blueprint in several ways:
 
 ![AWS ElastiCache Notifications](https://github.com/assertible/lambda-cloudwatch-slack/raw/master/images/elasticache.png)
 
+**Basic support for notifications from CloudFormation:**
+![AWS CloudFormation Notifications](https://github.com/assertible/lambda-cloudwatch-slack/raw/master/images/elasticache.png)
+
+
 **Support for encrypted and unencrypted Slack webhook url:**
 
 We have also integrated the principlese from AWS DevOps blog [Use Slack ChatOps to Deploy Your Code – How to Integrate Your Pipeline in AWS CodePipeline with Your Slack Channel](https://aws.amazon.com/blogs/devops/use-slack-chatops-to-deploy-your-code-how-to-integrate-your-pipeline-in-aws-codepipeline-with-your-slack-channel/) to allow interaction from Slack to approve or reject manual approvals. 
@@ -99,18 +103,18 @@ If you wish to deploy to a stage other than the default `dev`:
 serverless deploy --stage prod
 ```
 
-### 4. Add your Webhook URL to the Slack App 
-Once deployed you will get a URL for the `webhook` in the output of the serverless deploy. 
+### 4. Add your webhook URL to the Slack App 
+Once deployed you will get a URL for the `SlackWebhookURL` in the output of the serverless deploy. This URL allows Slack to communicate back to our app after an interaction happens. 
 
 ```bash
 endpoints:
-  POST - https://xxxxxxxxxx.execute-api.ap-southeast-2.amazonaws.com/dev/webhook
+  POST - https://xxxxxxxxxx.execute-api.ap-southeast-2.amazonaws.com/production/webhook
 ```
 Go back to your [Slack App](https://api.slack.com/apps/) and activate Interactive Components
 
 ![Activate Interactive Components](https://github.com/65/aws-slackops-serverless/raw/master/images/activate_interactive_components.png)
 
-Then enter the Webhook URL and save
+Then enter the `SlackWebhookURL` and save
 
 ![Add webhook URL](https://github.com/65/aws-slackops-serverless/raw/master/images/add_webhook_url.png)
 
@@ -122,13 +126,15 @@ serverless invoke local --function aggregator --path test/sns-codedeploy-event.j
 
 ### 5. Configure AWS serices 
 
+On your AWS Services you should use the `NotificationARN` displayed in the outputs of the CloudFormation stack. 
+
 #### Elastic Beanstalk 
 To set ElasticBeanstalk to push notifications, you need the ARN of the SNS Topic created in this project. In your ElasticBeanstalk code create an [.ebextensions](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/ebextensions.html) folder, and then create a file (something like `10-environment-config`) and pop this in, replacing your arn with the example:
 ```
 option_settings:
    - namespace: aws:elasticbeanstalk:sns:topics
      option_name: NotificationTopicArn
-     value: arn:aws:sns:ap-southeast-2:xxxxxxxxxxxxx:cloudwatch-slackops-serverless-aggregate-dev
+     value: arn:aws:sns:ap-southeast-2:xxxxxxxxxxxxx:cloudwatch-slackops-serverless-aggregate-production
 ```
 Full details on [aws:elasticbeanstalk:sns:topics](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html#command-options-general-elasticbeanstalksnstopics) found here. 
 
@@ -163,7 +169,31 @@ On Configure Details - give the rule a meaningful name like `CodePipeline-to-Sla
 
 Then save by clicking `Create Rule`. 
 
+
 #### Code Pipeline Manual Approval
 Edit the CodePipeline stage > Manual Approval. 
 Use the comments wisely, as this will show up in the confirmation box, so indicate the result of the action here. 
 ![Add SNS to CodePipeline manual approval](https://github.com/65/aws-slackops-serverless/raw/master/images/add_sns_to_codepipeline_approval.png)
+
+You can also do this via your CloudFormation templates, using a ManualApproval step. In this step we are passing in the `NotificationARN` as a parameter to the template: 
+```json
+{
+  "Name": "BuildManualApproval",
+  "Actions": [
+    {
+      "Name": "ManualApproval",
+      "ActionTypeId": {
+        "Category": "Approval",
+        "Owner": "AWS",
+        "Provider": "Manual",
+        "Version": "1"
+      },
+      "Configuration": {
+        "NotificationArn": { "Ref": "NotificationARN" },
+        "CustomData": { "Fn::Join" : [" ", [ "Do you want to build this" ,{ "Ref" : "EnvironmentType" }, "version?"  ]]}
+      },
+      "RunOrder": 2
+    }
+  ]
+}
+```

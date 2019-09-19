@@ -1,0 +1,19 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-west-2:123456789123:cloudwatch-slackops-serverless-aggregate-production:00000000-0000-0000-0000-000000000000",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "00000000-0000-0000-0000-000000000000",
+                "TopicArn": "arn:aws:sns:us-west-2:123456789123:cloudwatch-slackops-serverless-aggregate-production",
+                "Subject": "AWS CloudFormation Notification",
+                "Message": "StackId='arn:aws:cloudformation:us-west-2:123456789123:stack/pipeline-dev/d96ebc40-d54a-11e9-b20f-067657bdc03a'\nTimestamp='2019-09-19T04:08:56.334Z'\nEventId='CodePipelineSetup-UPDATE_COMPLETE-2019-09-19T04:08:56.334Z'\nLogicalResourceId='CodePipelineSetup'\nNamespace='123456789123'\nPhysicalResourceId='arn:aws:cloudformation:us-west-2:123456789123:stack/pipeline-dev-CodePipelineSetup-ABCDABCD/00000000-0000-0000-0000-000000000000'\nResourceProperties='{\"TemplateURL\":\"https://s3-us-west-2.amazonaws.com/mybucketname/codepipeline.cform\",\"Parameters\":{\"EnvironmentType\":\"dev\",\"GitHubSecret\":\"****\",\"ArtifactBucketPrefix\":\"codepipeline-artifacts\",\"AUCodeDeployGroup\":\"cf-php-au-dev-CodeDeploy-1234ABCD1234-CodeDeployGroup-1234ABCD1234\",\"GitHubOwner\":\"****\",\"NotificationARNs\":\"arn:aws:sns:us-west-2:123456789123:cloudwatch-slackops-serverless-aggregate-production\",\"ParentStackName\":\"pipeline-dev\",\"CodeBuildProject\":\"CodeBuildProject-ABCD1234\",\"GitHubRepo\":\"****\",\"USCodeDeployGroup\":\"cf-php-us-dev-CodeDeploy-1234ABCD1234-CodeDeployGroup-1234ABCD1234\"},\"NotificationARNs\":[\"arn:aws:sns:us-west-2:123456789123:cloudwatch-slackops-serverless-aggregate-production\"],\"Tags\":[{\"Value\":\"arn:aws:cloudformation:us-west-2:123456789123:stack/pipeline-dev/d96ebc40-d54a-11e9-b20f-067657bdc03a\",\"Key\":\"Application\"},{\"Value\":\"pipeline-dev\",\"Key\":\"ParentStackName\"},{\"Value\":\"CodePipelineConfig-dev-us-west-2-pipeline-dev\",\"Key\":\"Name\"}],\"TimeoutInMinutes\":\"30\"}'\nResourceStatus='UPDATE_COMPLETE'\nResourceStatusReason='Yaddayyaaa'\nResourceType='AWS::CloudFormation::Stack'\nStackName='pipeline-dev'\nClientRequestToken='null'\n",
+                "Timestamp": "2019-09-19T04:08:56.475Z",
+                "UnsubscribeUrl": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:123456789123:cloudwatch-slackops-serverless-aggregate-production:00000000-0000-0000-0000-000000000000",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}

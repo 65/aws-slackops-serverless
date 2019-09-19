@@ -10,3 +10,4 @@ serverless invoke local --function aggregator --path test/sns-codedeploy-configu
 serverless invoke local --function aggregator --path test/sns-elasticache-event.json
 serverless invoke local --function aggregator --path test/sns-autoscaling-event.json
 serverless invoke local --function aggregator --path test/sns-codepipeline-event-pipeline-manualapproval.json
+serverless invoke local --function aggregator --path test/sns-cloudformation-event.json

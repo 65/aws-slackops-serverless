@@ -15,7 +15,12 @@ var processEvent = function(event, context, hookURL) {
   catch (e) {    
   }
 
-  if(eventSubscriptionArn.indexOf(config.services.codepipeline.match_text) > -1 || eventSnsSubject.indexOf(config.services.codepipeline.match_text) > -1 || eventSnsMessageRaw.indexOf(config.services.codepipeline.match_text) > -1){
+  if(eventSubscriptionArn.indexOf(config.services.cloudformation.match_text) > -1 || eventSnsSubject.indexOf(config.services.cloudformation.match_text) > -1 || eventSnsMessageRaw.indexOf(config.services.cloudformation.match_text) > -1){
+    console.log("processing cloudformation notification");
+    var handleAutoScaling = require('./notifications/cloudformation.js');
+    slackMessage = handleAutoScaling(event, context);
+  }
+  else if(eventSubscriptionArn.indexOf(config.services.codepipeline.match_text) > -1 || eventSnsSubject.indexOf(config.services.codepipeline.match_text) > -1 || eventSnsMessageRaw.indexOf(config.services.codepipeline.match_text) > -1){
     console.log("processing codepipeline notification");
     var handleCodePipeline = require('./notifications/codepipeline.js');
     slackMessage = handleCodePipeline(event,context)
