@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: cloudwatch-slackops-serverless # NOTE: update this with your service name
+service: slackops # NOTE: update this with your service name
 
 provider:
   name: aws
@@ -84,6 +84,13 @@ functions:
 # Give 
 resources:
   Resources:
+    ssmSnsTopic:
+      Type: "AWS::SSM::Parameter"
+      Properties: 
+        Name: /SlackSnSTopic
+        Type: String
+        Value:
+          Ref: SnsTopic
     SnsTopic:
         Type: AWS::SNS::Topic
         Properties:
