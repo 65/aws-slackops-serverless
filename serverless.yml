@@ -17,7 +17,7 @@ provider:
   name: aws
   runtime: nodejs8.10
   stage: ${opt:stage, 'dev'}
-  profile: mieducation
+  profile: medic52
   region: ap-southeast-2
 
   # you can define service wide environment variables here
