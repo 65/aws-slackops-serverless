@@ -15,6 +15,7 @@ service: slackops # NOTE: update this with your service name
 
 provider:
   name: aws
+  stackName: Slack notification aggregator, and webhook for AWS services
   runtime: nodejs8.10
   stage: production
   profile: medic52
