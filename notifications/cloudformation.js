@@ -46,12 +46,12 @@ var handleCloudFormation = function(event, context) {
       "alt_text": "Well done you!"
     }
   }
-//console.log(slackMessage.blocks)
-return slackMessage;
-
-
-
-
+  //console.log(slackMessage.blocks)
+  if (!message.ResourceStatus.includes('IN_PROGRESS')) {
+    return slackMessage;
+  }else{
+    return baseSlackMessage;
+  }
   
 };
 
