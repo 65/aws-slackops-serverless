@@ -33,15 +33,17 @@ var handleCloudFormation = function(event, context) {
   if (message.ResourceStatusReason.length) slackMessage.blocks.push({ "type": "section", "text":{"type": "mrkdwn","text": "*More Information:* " + message.ResourceStatusReason}});
 
   if (message.ResourceStatus.includes('FAIL')) {
-    slackMessage.blocks.push({ 
-      "accessory":{"type": "image","image_url": "https://github.com/65/aws-slackops-serverless/raw/master/images/fail/fail-" + Math.floor(Math.random() * 4) + ".jpg"}
-    })
+    slackMessage.blocks[0].accessory = {
+      "type": "image",
+      "image_url": "https://github.com/65/aws-slackops-serverless/raw/master/images/fail/fail-" + Math.floor(Math.random() * 4) + ".jpg",
+      "alt_text": "It didn't work out"
+    }
   }
   if (message.ResourceStatus.includes('COMPLETE')) {
     slackMessage.blocks[0].accessory = {
       "type": "image",
       "image_url": "https://github.com/65/aws-slackops-serverless/raw/master/images/success/success-" + Math.floor(Math.random() * 4) + ".jpg",
-      "alt_text": "alt text for image"
+      "alt_text": "Well done you!"
     }
   }
 //console.log(slackMessage.blocks)
