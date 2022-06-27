@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:ap-southeast-2:653856976398:slackops-aggregate-production:bdcd9ab9-2ecb-4f2c-a57d-b22eda6a204f",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "e8d3858b-7867-5215-a105-deb87a877aa5",
+                "TopicArn": "arn:aws:sns:ap-southeast-2:653856976398:slackops-aggregate-production",
+                "Subject": "AWS CloudFormation Notification",
+                "Message": "StackId='arn:aws:cloudformation:ap-southeast-2:653856976398:stack/php-us-dev-CodeDeploy-P424H9QSK3I8/26ef2d10-f5b4-11ec-8a8a-0692a033c6ed'\nTimestamp='2022-06-27T00:58:08.384Z'\nEventId='CodeDeployGroup-CREATE_IN_PROGRESS-2022-06-27T00:58:08.384Z'\nLogicalResourceId='CodeDeployGroup'\nNamespace='653856976398'\nPhysicalResourceId='php-us-dev-CodeDeploy-P424H9QSK3I8-CodeDeployGroup-1HDMV9HXHTW1C'\nResourceProperties='{\"ApplicationName\":\"CodeDeploy-dev-ap-southeast-2\",\"ServiceRoleArn\":\"arn:aws:iam::653856976398:role/php-us-dev-CodeDeploy-P424H9-CodeDeployServiceRole-OSRG4GWGW1XL\",\"AutoScalingGroups\":[\"php-us-dev-AutoScalingGroup-ORKNV2ZYK4HD\"],\"DeploymentConfigName\":\"CodeDeployDefault.OneAtATime\"}'\nResourceStatus='CREATE_IN_PROGRESS'\nResourceStatusReason='Resource creation Initiated'\nResourceType='AWS::CodeDeploy::DeploymentGroup'\nStackName='php-us-dev-CodeDeploy-P424H9QSK3I8'\nClientRequestToken='null'\n",
+                "Timestamp": "2022-06-27T00:58:08.487Z",
+                "SignatureVersion": "1",
+                "Signature": "GzUJvlqBgQnOem/rW9KkQVvv/y7WmgSSdz6fIAdEq4m/Y4NiSaP57mytYCGc14+UX3Pdg+g/Mehvf/suvPEWd7OTQdmgQ8Tv0IOhbzvT//xBn4no2R3yhJzKWMl2O7Is+HTwD5ThN8lML8QALp8XYgq/wRiTB+cQKiwTmN925M38g30ocaiuhiA2RKFP8BN5n5C+PmvOuGICpowrBN5hkigbfyYU8ovTySaNF1LigEMG6+V44tuRaTuEV1lZBsmA4Hs/DNMU/ktsta4FMwSYtHzoBc3hhgX+psWHNFnKqzzouJQJzvF3WylxnrGLv98dnyrGZzHtRWXB5ebxgMSWVQ==",
+                "SigningCertUrl": "https://sns.ap-southeast-2.amazonaws.com/SimpleNotificationService-7ff5318490ec183fbaddaa2a969abfda.pem",
+                "UnsubscribeUrl": "https://sns.ap-southeast-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:ap-southeast-2:653856976398:slackops-aggregate-production:bdcd9ab9-2ecb-4f2c-a57d-b22eda6a204f",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}

@@ -19,40 +19,106 @@ var handleCloudFormation = function(event, context) {
     }
   }
   console.log(message);
-  var region = message.StackId.split(':')[4];
+  var region = message.StackId.split(':')[3];
+
+  var emoji = ":stopwatch:";
+  if (message.ResourceStatus.includes('FAIL')) {
+    emoji = ":warning:"
+  }else if (message.ResourceStatus.includes('COMPLETE')) {
+    emoji = ":partying_face:"
+  }
+
+  var flag = ":us:";
+  if (message.StackId.includes('ap-')) {
+    flag = ":flag-au:"
+  }else if (message.StackId.includes('eu-')) {
+    flag = ":flag-eu:"
+  }
+
+
+  var slackMessage = {
+    "blocks": [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": "This is a header block",
+          "emoji": true
+        }
+      }
+    ]
+  };
 
   var slackMessage = {"blocks":[
     {
-      "type": "section",
+      "type": "header",
       "text": {
-        "type": "mrkdwn",
-        "text": "*AWS CloudFormation Notification*\nStack `" + message.StackName + "` is *" + message.ResourceStatus + "* on component *"+ message.LogicalResourceId + "* " + "\n<https://" + region + ".console.aws.amazon.com/cloudformation/home?region=" + region + "#/stacks/stackinfo?stackId=" + message.StackId + "|Open in AWS Console>"
+        "type": "plain_text",
+        "text": "AWS CloudFormation Notification",
+        "emoji": true
       }
+    },
+    {
+      "type": "section",
+      "fields":[
+        {
+          "type": "mrkdwn",
+          "text": "*Status:*\n" + emoji + " " + message.ResourceStatus
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Info:*\n" + message.ResourceStatusReason 
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "fields":[
+        {
+          "type": "mrkdwn",
+          "text": "*Region:*\n" + flag + " " + region
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Stack:*\n" + message.StackName 
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "fields":[
+        {
+          "type": "mrkdwn",
+          "text": "*Resource:*\n" + message.LogicalResourceId
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*View in Console:*\n<https://" + region + ".console.aws.amazon.com/cloudformation/home?region=" + region + "#/stacks/stackinfo?stackId=" + message.StackId + "|Open Stack in CloudFormation>"
+        }
+      ]
     }
-  ]};
-  if (message.ResourceStatusReason.length) slackMessage.blocks.push({ "type": "section", "text":{"type": "mrkdwn","text": "*More Information:* " + message.ResourceStatusReason}});
+    
 
-  if (message.ResourceStatus.includes('FAIL')) {
-    slackMessage.blocks[0].accessory = {
-      "type": "image",
-      "image_url": "https://github.com/65/aws-slackops-serverless/raw/master/images/fail/fail-4.jpg",
-      "alt_text": "It didn't work out"
-    }
-  }
-  if (message.ResourceStatus.includes('COMPLETE')) {
-    slackMessage.blocks[0].accessory = {
-      "type": "image",
-      "image_url": "https://github.com/65/aws-slackops-serverless/raw/master/images/success/success-4.jpg",
-      "alt_text": "Well done you!"
-    }
-  }
-  //console.log(slackMessage.blocks)
-  if (!message.ResourceStatus.includes('IN_PROGRESS')) {
-    return slackMessage;
-  }else{
-    return baseSlackMessage;
-  }
+  ]};
+
+  // Add the date and time
+  slackMessage.blocks.push({
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": "<!date^" + timestamp + "^{date_short_pretty} at {time_secs}|" + event.Records[0].Sns.Timestamp + ">"
+        }
+      ]
+    });
+
+  console.log(slackMessage.blocks)
+  
+  return slackMessage;
+  
   
 };
 
 module.exports = handleCloudFormation;
+
+

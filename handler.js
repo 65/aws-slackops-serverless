@@ -39,10 +39,10 @@ module.exports.aggregator = (event, context, callback) => {
 };
 
 module.exports.incomingwebhook = (event, context, callback) => {
-  console.log(event);
+  console.log("Event" + event);
   
   var payload = JSON.parse(querystring.decode(event.body).payload);
-  console.log(payload);
+  console.log("Payload" + payload);
   var actionresult = JSON.parse(payload.actions[0].value);
   var actionstatus = actionresult.approve === true ? 'Approved' : 'Rejected'; 
 

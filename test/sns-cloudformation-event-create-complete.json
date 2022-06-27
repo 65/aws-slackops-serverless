@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-west-2:653856976398:slackops-aggregate-production:bdcd9ab9-2ecb-4f2c-a57d-b22eda6a204f",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "e4e789a6-9d9f-5dce-9d6e-d2959f7d4863",
+                "TopicArn": "arn:aws:sns:us-west-2:653856976398:slackops-aggregate-production",
+                "Subject": "AWS CloudFormation Notification",
+                "Message": "StackId='arn:aws:cloudformation:us-west-2:653856976398:stack/php-us-dev-CodeDeploy-P424H9QSK3I8/26ef2d10-f5b4-11ec-8a8a-0692a033c6ed'\nTimestamp='2022-06-27T00:58:10.789Z'\nEventId='370b0430-f5b4-11ec-9755-0a47c5cc8a1f'\nLogicalResourceId='php-us-dev-CodeDeploy-P424H9QSK3I8'\nNamespace='653856976398'\nPhysicalResourceId='arn:aws:cloudformation:us-west-2:653856976398:stack/php-us-dev-CodeDeploy-P424H9QSK3I8/26ef2d10-f5b4-11ec-8a8a-0692a033c6ed'\nPrincipalId='AIDAIKMXHQ4TUSAZTSCP2'\nResourceProperties='null'\nResourceStatus='CREATE_COMPLETE'\nResourceStatusReason=''\nResourceType='AWS::CloudFormation::Stack'\nStackName='php-us-dev-CodeDeploy-P424H9QSK3I8'\nClientRequestToken='null'\n",
+                "Timestamp": "2022-06-27T00:58:10.825Z",
+                "SignatureVersion": "1",
+                "Signature": "W4Rz7Ea0kNd3ZqTeAaU8NDyv7NjDFHz6gzeDzMdTQCrnH7+JMersZtFjH+IS0hj7i4zDuQQJhtlVEQRBXDQZLOsIOOkvyuTxSYYgqozRQaQzFbrsSZ6+tkqWk2q2ePN7RduuXNIFHlDQ3+A8eOHv7t5ASfIzZsPUUqShxm0CFGixuSAIdEeGtZVZwWlhv8jOy+Wsc98TLbJgYNmB2pd6OjOrcSzp+m581Txm5VvVg/g3Y/dLWb3zUvApecLXb+OOEFeYHKOfxwkcYYwDK/yyaB99YbyBS44d1b47FL1S4fgh+c5XHbx3ODAACW9wx8qHnCqAn+V30CEX/vUBo0jKmA==",
+                "SigningCertUrl": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-7ff5318490ec183fbaddaa2a969abfda.pem",
+                "UnsubscribeUrl": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:653856976398:slackops-aggregate-production:bdcd9ab9-2ecb-4f2c-a57d-b22eda6a204f",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}

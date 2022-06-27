@@ -1,22 +1,13 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
+org: sixfive
+app: medic52
 service: slackops # NOTE: update this with your service name
+
+frameworkVersion: '3'
 
 provider:
   name: aws
-  Description: Slack notification aggregator and webhook for AWS
-  runtime: nodejs10.x
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
   stage: ${opt:stage, 'dev'}
   profile: ${opt:profile, 'medic52'}
   region: ${opt:region, 'us-west-2'}
@@ -25,7 +16,7 @@ provider:
   environment:
     # KMS_ENCRYPTED_HOOK_URL: you can use ENCRYPTED_HOOK_URL if you want
     # Uses AWS SSM to store the URL, see README for details on how to do this
-    UNENCRYPTED_HOOK_URL: ${ssm:SLACK_APP_HOOK_URL}
+    UNENCRYPTED_HOOK_URL: ${self:custom.slackwebhook.${opt:region, self:provider.region}}
 
   # Give this lambda the ability to deal with CodePipline manual approvals
   iamRoleStatements:
@@ -39,6 +30,18 @@ plugins:
   - serverless-offline-sns
 
 custom:
+  prefix:
+    local: -${opt:stage, self:provider.stage}
+    dev: -${opt:stage, self:provider.stage}
+    staging: -${opt:stage, self:provider.stage}
+    master: ''
+  slackwebhook:
+    #############################################
+    # Add each region you operate in 
+    # Add the Slack Webhook URL here for each
+    ############################################
+    us-west-2: "https://hooks.slack.com/services/xxxxxxxxxxxx/xxxxxxxxxxxx/xxxxxxxxxxxx"
+    ap-southeast-2: "https://hooks.slack.com/services/xxxxxxxxxxxx/xxxxxxxxxxxx/xxxxxxxxxxxx"
   serverless-offline-sns:
     port: 4002 # a free port for the sns server to run on
     debug: false
@@ -68,8 +71,6 @@ custom:
 functions:
   aggregator:
     handler: handler.aggregator
-    DependsOn:
-      - SnsTopic
     events:
       - sns:
           arn: ${self:custom.topicArn}
@@ -85,18 +86,27 @@ functions:
 # Give 
 resources:
   Resources:
+    ssmSlackAppURL:
+      Type: "AWS::SSM::Parameter"
+      Properties: 
+        Name: SLACK_APP_HOOK_URL${self:custom.prefix.${opt:stage, self:provider.stage}}
+        Type: String
+        Value: ${self:custom.slackwebhook.${opt:region, self:provider.region}}
+  
     ssmSnsTopic:
       Type: "AWS::SSM::Parameter"
       Properties: 
-        Name: /SlackSnSTopic
+        Name: /SlackSnSTopic${self:custom.prefix.${opt:stage, self:provider.stage}}
         Type: String
         Value:
           Ref: SnsTopic
+
     SnsTopic:
         Type: AWS::SNS::Topic
         Properties:
           DisplayName: "SNS Slack Topic"
           TopicName: ${self:custom.topicName}
+
     SnsTopicPolicy:
         Type: AWS::SNS::TopicPolicy
         DependsOn:
@@ -117,9 +127,12 @@ resources:
 
   Outputs: 
     SlackWebhookURL:
-        Description: The endpoint to put in https://api.slack.com/apps > Interactive Components > Interactivity > Request URL
+        Description: The AWS endpoint to put in https://api.slack.com/apps > Interactive Components > Interactivity & Shortcuts > Interactivity > Request URL
         Value:
           ${self:custom.apiEndpoint}
+    SlackWebhookApp:
+        Description: When you update the endpoint, ensure its in the same app that has this Webhook endpoint in https://api.slack.com/apps 
+        Value: ${self:custom.slackwebhook.${opt:region, self:provider.region}}
     NotificationARN:
         Description: The endpoint to put in to NotificationARN items and for use in AWS services
         Value:

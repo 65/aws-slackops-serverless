@@ -2,10 +2,6 @@
 
 A [Serverless](https://serverless.com/framework/docs/providers/aws/guide/intro/) and [AWS Lambda](http://aws.amazon.com/lambda/) function for better Slack notifications, and slack operations. 
 
-[![BuildStatus](https://travis-ci.org/65/aws-slackops-serverless.png?branch=master)](https://travis-ci.org/65/aws-slackops-serverless)
-[![NPM version](https://badge.fury.io/js/aws-slackops-serverless.png)](http://badge.fury.io/js/aws-slackops-serverless)
-
-
 ## Overview
 
 Built on code from Assertible's [lambda-cloudwatch-slack](https://assertible.com/blog/npm-package-lambda-cloudwatch-slack) thanks to [@creichert](https://github.com/creichert) and team.
@@ -51,7 +47,7 @@ If it is a [codepipeline manual approval step](https://docs.aws.amazon.com/codep
 
 
 ## Configuration
-There's a few steps here, so bear with us. 
+There's a few steps here, so bear with us. If you run actions in multiple regions, you will need a SlackApp for each (we didn't work out how to centralise the webhook responses for example to one region as a hub, and have them be distributed to another region). 
 ### 1. Create your slack app 
 
 Start at [https://api.slack.com/apps ](https://api.slack.com/apps ) Add a name, (icon if you wish), and activate the `WebHooks` integration. 
@@ -71,50 +67,46 @@ git clone https://github.com/65/aws-slackops-serverless
 npm install 
 ```
 
-#### Setup AWS variables
-
-Because this app is on AWS, and we don't want to submit any sensitive or pertinent data to git, you can set up each of the environment variables using AWS SSM [Parameter Store](http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html)
-
-Make your own copy of params-example.json and update the values to suit your application
-```bash 
-cp params-example.json params.json 
-```
-
-Note you may need to use options like `--region` because SSM stores parameteres in each region, and/or `--profile` if you are using multiple [named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) with AWS CLI.
-
-Let's push these up to SSM using the AWS CLI (add `--profile yourprofilename` if you are using named profiles for the AWS CLI:
-
-```bash
-aws ssm put-parameter --cli-input-json file://params.json --region ap-southeast-2 
-```
-
 #### Setup Serverless
-In the `serverless.yml` update the `region` to match where you have pushed your SSM variable. 
+In the `serverless.yml` change the `org` and `app` to your details in the first couple of lines. 
 
+Find the `slackwebhook` section and add a line for each regions you operate within, and add the Slack WebHook URL for each 
+
+```
+slackwebhook:
+  #############################################
+  # Add each region you operate in 
+  # Add the Slack Webhook URL here for each
+  ############################################
+  us-west-2: "https://hooks.slack.com/services/xxxxxxxxxxxxx/xxxxxxxxxxxxx/xxxxxxxxxxxxx"
+  ap-southeast-2: "https://hooks.slack.com/services/xxxxxxxxxxxxx/xxxxxxxxxxxxx/xxxxxxxxxxxxx"
+```
 If you are using named profiles in your AWS CLI add that profile name to `profile`
 
 ### 3. Deploy the app to AWS
 The final step is to deploy the integration to AWS:
 ```bash
-serverless deploy
+serverless deploy --region=us-west-2
 ```
-If you wish to deploy to a stage other than the default `dev`: 
+If you wish to deploy to a stage other than the default `dev` or a different `region`: 
 ```bash
-serverless deploy --stage prod
+serverless deploy --stage master --region=ap-southeast-2
 ```
 
 ### 4. Add your webhook URL to the Slack App 
 Once deployed you will get a URL for the `SlackWebhookURL` in the output of the serverless deploy. This URL allows Slack to communicate back to our app after an interaction happens. 
 
+For example, this one is for `ap-southeast-2` and `master`
+
 ```bash
 endpoints:
-  POST - https://xxxxxxxxxx.execute-api.ap-southeast-2.amazonaws.com/production/webhook
+  POST - https://xxxxxxxxxx.execute-api.ap-southeast-2.amazonaws.com/master/webhook
 ```
-Go back to your [Slack App](https://api.slack.com/apps/) and activate Interactive Components
+Go back to your [Slack App](https://api.slack.com/apps/) open the app and in Interactivty & Shortcuts > Interactivity, activate Interactive Components
 
 ![Activate Interactive Components](https://github.com/65/aws-slackops-serverless/raw/master/images/activate_interactive_components.png)
 
-Then enter the `SlackWebhookURL` and save
+Then enter the `SlackWebhookURL` into the Request URL and save
 
 ![Add webhook URL](https://github.com/65/aws-slackops-serverless/raw/master/images/add_webhook_url.png)
 
@@ -159,11 +151,11 @@ Select the `Service Name` and `Event Types` as you wish, or click `edit` next to
   ]
 }
 ```
-Then in the Targets section select the `SNS Topic` that contains `-aggregate`
+Then in the `Targets` section select the `SNS Topic` that contains `-aggregate`
 
 ![Select CloudWatch rule Target](https://github.com/65/aws-slackops-serverless/raw/master/images/cloudwatch_target.png)
 
-On Configure Details - give the rule a meaningful name like `CodePipeline-to-Slack`
+On `Configure Details` - give the rule a meaningful name like `CodePipeline-to-Slack`
 
 ![CloudWatch configure rule details](https://github.com/65/aws-slackops-serverless/raw/master/images/cloudwatch_configure_rule_details.png)
 
@@ -197,3 +189,26 @@ You can also do this via your CloudFormation templates, using a ManualApproval s
   ]
 }
 ```
+
+## Testing 
+
+On your command line you can test messages, by making them look like they have come out of CloudWatch, and send them to Slack. 
+
+### Cloudwatch to Slack Messages
+
+Choose your file from within test folder and insert below to generate a sample slack message. 
+
+```bash 
+serverless invoke local --function aggregator --path test/sns-codepipeline-event-pipeline-manualapproval.json --stage local
+```
+
+### Slack to Lambda 
+
+An action item, such as the Approve / Reject approval action in Code Pipeline will trigger a request that goes back to AWS via Slack. 
+
+You can test this with the following, but expect an error ` The security token included in the request is invalid.` This is because 
+
+```bash
+serverless invoke local --function slackincoming --path test/slack-webhook-response.json --stage local
+``` 
+

@@ -55,6 +55,10 @@ var processEvent = function(event, context, hookURL) {
     slackMessage = handleCatchAll(event, context);
   }
 
+  console.log("sns sending to:" + hookURL);
+
+  // console.log("slack message" + JSON.parse(slackMessage));
+
   postMessage(slackMessage, hookURL, function(response) {
     if (response.statusCode < 400) {
       console.info('message posted successfully');
