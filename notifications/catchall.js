@@ -5,7 +5,7 @@ var handleCatchAll = function(event, context) {
 
     var record = event.Records[0]
     var subject = record.Sns.Subject
-    var timestamp = new Date(record.Sns.Timestamp).getTime() / 1000;
+    var timestamp = Math.floor((new Date(erecord.Sns.Timestamp)).getTime()/1000);
     var message = JSON.parse(record.Sns.Message)
     var color = "warning";
 

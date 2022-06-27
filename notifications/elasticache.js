@@ -4,7 +4,7 @@ var baseSlackMessage = {}
 var handleElasticache = function(event, context) {
   var subject = "AWS ElastiCache Notification"
   var message = JSON.parse(event.Records[0].Sns.Message);
-  var timestamp = (new Date(event.Records[0].Sns.Timestamp)).getTime()/1000;
+  var timestamp = Math.floor((new Date(event.Records[0].Sns.Timestamp)).getTime()/1000);
   var region = event.Records[0].EventSubscriptionArn.split(":")[3];
   var eventname, nodename;
   var color = "good";

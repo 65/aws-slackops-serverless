@@ -4,7 +4,7 @@ var baseSlackMessage = {}
 var handleAutoScaling = function(event, context) {
   var subject = "AWS AutoScaling Notification"
   var message = JSON.parse(event.Records[0].Sns.Message);
-  var timestamp = (new Date(event.Records[0].Sns.Timestamp)).getTime()/1000;
+  var timestamp = Math.floor((new Date(event.Records[0].Sns.Timestamp)).getTime()/1000);
   var eventname, nodename;
   var color = "good";
 

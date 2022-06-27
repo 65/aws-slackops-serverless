@@ -2,7 +2,7 @@ var _ = require('lodash');
 var baseSlackMessage = {}
 
 var handleCloudWatch = function(event, context) {
-  var timestamp = (new Date(event.Records[0].Sns.Timestamp)).getTime()/1000;
+  var timestamp = Math.floor((new Date(event.Records[0].Sns.Timestamp)).getTime()/1000);
   var message = JSON.parse(event.Records[0].Sns.Message);
   var region = event.Records[0].EventSubscriptionArn.split(":")[3];
   var subject = "AWS CloudWatch Notification";

@@ -2,7 +2,7 @@ var _ = require('lodash');
 var baseSlackMessage = {}
 
 var handleElasticBeanstalk = function(event, context){
-  var timestamp = (new Date(event.Records[0].Sns.Timestamp)).getTime()/1000;
+  var timestamp = Math.floor((new Date(event.Records[0].Sns.Timestamp)).getTime()/1000);
   var subject = event.Records[0].Sns.Subject || "AWS Elastic Beanstalk Notification";
   var message = event.Records[0].Sns.Message;
 

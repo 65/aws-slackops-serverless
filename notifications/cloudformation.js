@@ -2,7 +2,7 @@ var _ = require('lodash');
 var baseSlackMessage = {}
 
 var handleCloudFormation = function(event, context) {
-  var timestamp = (new Date(event.Records[0].Sns.Timestamp)).getTime()/1000;
+  var timestamp = Math.floor((new Date(event.Records[0].Sns.Timestamp)).getTime()/1000);
   var color = "good";
 
   // split by the \n string first

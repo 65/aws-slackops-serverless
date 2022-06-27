@@ -3,7 +3,7 @@ var baseSlackMessage = {}
 
 var handleCodePipeline = function(event, context) {
   var subject = "AWS CodePipeline Notification";
-  var timestamp = (new Date(event.Records[0].Sns.Timestamp)).getTime()/1000;
+  var timestamp = Math.floor((new Date(event.Records[0].Sns.Timestamp)).getTime()/1000);
   var snsSubject = event.Records[0].Sns.Subject;
   var message;
   var fields = [];

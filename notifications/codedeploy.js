@@ -3,7 +3,7 @@ var baseSlackMessage = {}
 
 var handleCodeDeploy = function(event, context) {
   var subject = "AWS CodeDeploy Notification";
-  var timestamp = (new Date(event.Records[0].Sns.Timestamp)).getTime()/1000;
+  var timestamp = Math.floor((new Date(event.Records[0].Sns.Timestamp)).getTime()/1000);
   var snsSubject = event.Records[0].Sns.Subject;
   var message;
   var fields = [];
