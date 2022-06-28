@@ -198,6 +198,11 @@ On your command line you can test messages, by making them look like they have c
 
 Choose your file from within test folder and insert below to generate a sample slack message. 
 
+
+```bash 
+serverless invoke local --function aggregator --path test/sns-cloudformation-event-update-complete.json --stage local
+```
+
 ```bash 
 serverless invoke local --function aggregator --path test/sns-codepipeline-event-pipeline-manualapproval.json --stage local
 ```
