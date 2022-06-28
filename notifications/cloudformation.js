@@ -35,20 +35,6 @@ var handleCloudFormation = function(event, context) {
     flag = ":flag-eu:"
   }
 
-
-  var slackMessage = {
-    "blocks": [
-      {
-        "type": "header",
-        "text": {
-          "type": "plain_text",
-          "text": "This is a header block",
-          "emoji": true
-        }
-      }
-    ]
-  };
-
   var slackMessage = {"blocks":[
     {
       "type": "header",
@@ -57,21 +43,32 @@ var handleCloudFormation = function(event, context) {
         "text": "AWS CloudFormation Notification",
         "emoji": true
       }
-    },
-    {
+    }
+  ]};
+
+  var sectionRow = {
       "type": "section",
       "fields":[
         {
           "type": "mrkdwn",
           "text": "*Status:*\n" + emoji + " " + message.ResourceStatus
-        },
-        {
-          "type": "mrkdwn",
-          "text": "*Info:*\n" + message.ResourceStatusReason 
         }
       ]
-    },
-    {
+    }
+
+  if (message.ResourceStatusReason.length) { 
+    sectionRow.fields.push(
+      {
+        "type": "mrkdwn",
+        "text": "*Info:*\n" + message.ResourceStatusReason 
+      }
+    )
+  };
+
+  slackMessage.blocks.push(sectionRow);
+
+  slackMessage.blocks.push({
+    
       "type": "section",
       "fields":[
         {
@@ -96,10 +93,8 @@ var handleCloudFormation = function(event, context) {
           "text": "*View in Console:*\n<https://" + region + ".console.aws.amazon.com/cloudformation/home?region=" + region + "#/stacks/stackinfo?stackId=" + message.StackId + "|Open Stack in CloudFormation>"
         }
       ]
-    }
     
-
-  ]};
+  });
 
   // Add the date and time
   slackMessage.blocks.push({
