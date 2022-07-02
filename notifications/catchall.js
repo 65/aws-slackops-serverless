@@ -5,7 +5,7 @@ var handleCatchAll = function(event, context) {
 
     var record = event.Records[0]
     var subject = record.Sns.Subject
-    var timestamp = Math.floor((new Date(erecord.Sns.Timestamp)).getTime()/1000);
+    var timestamp = Math.floor((new Date(record.Sns.Timestamp)).getTime()/1000);
     var message = JSON.parse(record.Sns.Message)
     var color = "warning";
 
@@ -31,13 +31,14 @@ var handleCatchAll = function(event, context) {
         attachments: [
           {
             "color": color,
-            "fields": [
-              { "title": "Message", "value": record.Sns.Subject, "short": false },
-              { "title": "Description", "value": description, "short": false }
-            ],
+            "fields": [],
             "ts": timestamp
           }
         ]
+    }
+
+    for(fields in message){
+        slackMessage.attachments[0].fields.push({ "title": fields, "value": message[fields], "short": false })
     }
 
   return _.merge(slackMessage, baseSlackMessage);

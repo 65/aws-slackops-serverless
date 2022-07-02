@@ -200,6 +200,10 @@ Choose your file from within test folder and insert below to generate a sample s
 
 
 ```bash 
+serverless invoke local --function aggregator --path test/sns-event.json --stage local
+```
+
+```bash 
 serverless invoke local --function aggregator --path test/sns-cloudformation-event-update-complete.json --stage local
 ```
 
