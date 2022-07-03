@@ -1,0 +1,16 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns",
+            "Sns":
+            {
+                "Message": "{\"Description\":\"Service load > 70% for 3 cycles\",\"Action\":\"Restart\",\"Service\":\"NGINX\",\"NewStateValue\":\"error\"}",
+                "Subject": "Monit: Local Testing",
+                "Timestamp": "2022-08-07T18:51:41.652Z",
+                "Type": "Notification"
+            }
+        }
+    ]
+}

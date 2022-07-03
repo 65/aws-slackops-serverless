@@ -25,7 +25,7 @@ var handleCloudFormation = function(event, context) {
   if (message.ResourceStatus.includes('FAIL')) {
     emoji = ":warning:"
   }else if (message.ResourceStatus.includes('COMPLETE')) {
-    emoji = ":partying_face:"
+    emoji = ":white_check_mark:"
   }
 
   var flag = ":us:";
@@ -109,7 +109,13 @@ var handleCloudFormation = function(event, context) {
 
   console.log(slackMessage.blocks)
   
-  return slackMessage;
+
+  if (message.ResourceStatus.includes('IN_PROGRESS')) {
+    // We dont need all the In progress messages
+    return null;
+  }else{
+    return slackMessage;
+  }
   
   
 };

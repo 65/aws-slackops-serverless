@@ -55,23 +55,28 @@ var processEvent = function(event, context, hookURL) {
     slackMessage = handleCatchAll(event, context);
   }
 
-  console.log("sns sending to:" + hookURL);
-
   // console.log("slack message" + JSON.parse(slackMessage));
 
-  postMessage(slackMessage, hookURL, function(response) {
-    if (response.statusCode < 400) {
-      console.info('message posted successfully');
-      context.succeed();
-    } else if (response.statusCode < 500) {
-      console.error("error posting message to slack API: " + response.statusCode + " - " + response.statusMessage);
-      // Don't retry because the error is due to a problem with the request
-      context.succeed();
-    } else {
-      // Let Lambda retry
-      context.fail("server error when processing message: " + response.statusCode + " - " + response.statusMessage);
-    }
-  });
+  // Certain messages dont return anything useful, so we'll ignore them (e.g. CloudFormation In Progress)
+  if(slackMessage != null){
+    console.log("sns sending to:" + hookURL);
+    postMessage(slackMessage, hookURL, function(response) {
+      if (response.statusCode < 400) {
+        console.info('message posted successfully');
+        context.succeed();
+      } else if (response.statusCode < 500) {
+        console.error("error posting message to slack API: " + response.statusCode + " - " + response.statusMessage);
+        // Don't retry because the error is due to a problem with the request
+        context.succeed();
+      } else {
+        // Let Lambda retry
+        context.fail("server error when processing message: " + response.statusCode + " - " + response.statusMessage);
+      }
+    });
+  }else{
+    context.succeed();
+  }
+  
 };
 
 module.exports = processEvent;
