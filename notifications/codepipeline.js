@@ -13,18 +13,22 @@ var handleCodePipeline = function(event, context) {
 
   try {
     message = JSON.parse(event.Records[0].Sns.Message);
-    
+    console.log("CP Message",message);
     // blank if approval message
-    detailType = message['detail-type'];
+    detailType = message['detailType'];
     // contains an object if its an approval request
     approvalDetail = message['approval'];
 
+
     if(detailType === "CodePipeline Pipeline Execution State Change"){
+      console.log("Choice 1");
       changeType = "";
     } else if(detailType === "CodePipeline Stage Execution State Change"){
-      changeType = "STAGE " + message.detail.stage;
+      changeType = "STAGE";
+      console.log("Choice 2");
     } else if(detailType === "CodePipeline Action Execution State Change"){
       changeType = "ACTION";
+      console.log("Choice 3");
     } else if(approvalDetail){
       changeType = "ACTION";
       message.detail = {}; // fudge this for use below to avoid errors
@@ -41,7 +45,7 @@ var handleCodePipeline = function(event, context) {
     }
 
     
-
+    // Deal with a manual approval step
     if(approvalDetail){
 
       header = "APPROVAL REQUIRED: " + approvalDetail.stageName;
@@ -78,9 +82,9 @@ var handleCodePipeline = function(event, context) {
           }  
         );
 
-    }else{
+    }else{ // All other steps, not approvals
 
-      header = message.detail.state + ": CodePipeline " + changeType;
+      header = message.detail.state + ": " + message.detail.stage + " " + changeType;
       fields.push({ "title": "Message", "value": header, "short": false });
       fields.push({ "title": "Pipeline", "value": message.detail.pipeline, "short": true });
       fields.push({ "title": "Region", "value": message.region, "short": true });

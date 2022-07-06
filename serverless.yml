@@ -40,8 +40,8 @@ custom:
     # Add each region you operate in 
     # Add the Slack Webhook URL here for each
     ############################################
-    us-west-2: "https://hooks.slack.com/services/xxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxx"
-    ap-southeast-2: "https://hooks.slack.com/services/xxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxx"
+    us-west-2: "https://hooks.slack.com/services/xxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxx"
+    ap-southeast-2: "https://hooks.slack.com/services/xxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxx"
   serverless-offline-sns:
     port: 4002 # a free port for the sns server to run on
     debug: false

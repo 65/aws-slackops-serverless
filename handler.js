@@ -39,11 +39,14 @@ module.exports.aggregator = (event, context, callback) => {
 };
 
 module.exports.incomingwebhook = (event, context, callback) => {
-  console.log("Event" + event);
+  console.log("Event: " + JSON.stringify(event));
   
   var payload = JSON.parse(querystring.decode(event.body).payload);
-  console.log("Payload" + payload);
+  console.log("Payload: " + JSON.stringify(payload));
+
   var actionresult = JSON.parse(payload.actions[0].value);
+  console.log("Action Result: ",actionresult);
+
   var actionstatus = actionresult.approve === true ? 'Approved' : 'Rejected'; 
 
   const codepipeline = new AWS.CodePipeline();
