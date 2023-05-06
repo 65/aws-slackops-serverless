@@ -17,7 +17,7 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "serverless-offline-sns": "^0.53.0"
+    "serverless-offline-sns": "^0.76.0"
   },
   "keywords": [
     "aws",
